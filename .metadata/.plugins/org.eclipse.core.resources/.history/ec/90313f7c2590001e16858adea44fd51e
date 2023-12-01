@@ -1,0 +1,55 @@
+package com.curso.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.curso.model.Hotel;
+import com.curso.service.HotelService;
+/**
+ * @author Daniel Gordillo Guillen
+ * @version 1.0
+ */
+@RestController
+public class HotelController {
+
+    @Autowired
+    private HotelService service;
+
+    /**
+     * Devuelve el listado de hoteles.
+     *
+     * @return Listado de hoteles
+     */
+    @GetMapping(value="/hoteles", produces=MediaType.APPLICATION_JSON_VALUE)
+    public List<Hotel> listadoHoteles() {
+        return service.listaHoteles();
+    }
+
+    /**
+     * Busca un hotel por nombre.
+     *
+     * @param nombreHotel Nombre del hotel a buscar
+     * @return Hotel encontrado
+     */
+    @GetMapping(value="/hoteles/{nombreHotel}", produces=MediaType.APPLICATION_JSON_VALUE)
+    public Hotel buscarHotel(@PathVariable("nombreHotel") String nombreHotel) {
+        return service.devuelveHotel(nombreHotel);
+    }
+
+    /**
+     * Crea un nuevo hotel.
+     *
+     * @param hotel Hotel a crear
+     */
+    @PostMapping(value="/hoteles", consumes=MediaType.APPLICATION_JSON_VALUE)
+    public void altaHotel(@RequestBody Hotel hotel) {
+        service.crearHotel(hotel);
+    }
+}

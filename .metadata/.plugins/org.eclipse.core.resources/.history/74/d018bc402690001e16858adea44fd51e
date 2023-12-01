@@ -1,0 +1,57 @@
+package com.curso.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.curso.dao.DaoHotel;
+import com.curso.model.Hotel;
+/**
+ * @author Daniel Gordillo Guillen
+ * @version 1.0
+ * Implementación de la interfaz HotelService.
+ */
+@Service
+public class HotelServiceImplement implements HotelService {
+
+    @Autowired
+    DaoHotel dao;
+
+    /**
+     * Obtiene una lista de todos los hoteles.
+     *
+     * @return Lista de hoteles
+     */
+    @Override
+    public List<Hotel> listaHoteles() {
+        return dao.findAll();
+    }
+
+    /**
+     * Busca un hotel por su nombre.
+     *
+     * @param nombreHotel Nombre del hotel a buscar
+     * @return Hotel correspondiente al nombre, o null si no se encuentra
+     */
+    @Override
+    public Hotel devuelveHotel(String nombreHotel) {
+        List<Hotel> listadoHoteles = dao.findAll();
+        for (Hotel hotel : listadoHoteles) {
+            if (hotel.getNombreHotel().equals(nombreHotel)) {
+            	return hotel;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Crea un nuevo hotel.
+     *
+     * @param hotel Hotel a crear
+     */
+    @Override
+    public void crearHotel(Hotel hotel) {
+        dao.save(hotel);
+    }
+}

@@ -1,0 +1,60 @@
+package com.curso.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.curso.model.Reserva;
+import com.curso.service.ReservaService;
+/**
+ * @author Daniel Gordillo Guillen
+ * @version 1.0
+ *
+ * Controlador para las operaciones relacionadas con las reservas.
+ */
+@RestController
+public class ReservaController {
+
+    @Autowired
+    ReservaService service;
+
+    /**
+     * Endpoint para hacer una reserva.
+     *
+     * @param reserva Reserva a realizar
+     */
+    //http://localhost:9090/reservas
+    @PostMapping(value="/reservas")
+    public void hacerReserva(@RequestBody Reserva reserva) {
+        service.crearReserva(reserva);
+    }
+
+    /**
+     * Endpoint para obtener la lista de reservas.
+     *
+     * @return Lista de reservas
+     */
+    //http://localhost:9090/reservas
+    @GetMapping(value="/reservas", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Reserva> devuelveLista(){
+        return service.dameLista();
+    }
+
+    /**
+     * Endpoint para obtener la lista de reservas para un hotel específico.
+     *
+     * @param nombreHotel Nombre del hotel
+     * @return Lista de reservas para el hotel especificado
+     */
+    @GetMapping(value="/reservas/{nombreHotel}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Reserva> devuelveLista(@PathVariable String nombreHotel){
+        return service.reservasExistentes(nombreHotel);
+    }
+
+}
